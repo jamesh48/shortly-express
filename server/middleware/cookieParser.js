@@ -7,6 +7,7 @@ parseCookies = (req, res, next) => {
       return parsedCookies;
     }, {});
   }
+
   next();
 };
 

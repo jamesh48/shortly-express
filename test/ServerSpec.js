@@ -5,7 +5,6 @@ var httpMocks = require('node-mocks-http');
 
 var app = require('../server/app.js');
 var schema = require('../server/db/config.js');
-// var port = 4568;
 var port = 3000;
 
 /************************************************************/
@@ -40,9 +39,9 @@ describe('', function () {
     /* TODO: Update user and password if different than on your local machine            */
     /*************************************************************************************/
     db = mysql.createConnection({
-      user: 'root',
-      password: 'CloudlessSky82',
-      database: 'shortly'
+      user: process.env.DBUSER,
+      password: process.env.DBPASS,
+      database: process.env.DATABASE
     });
 
     /**************************************************************************************/
@@ -796,6 +795,7 @@ describe('', function () {
         });
       });
     });
+
     describe('With previously saved urls:', function () {
 
       var link;

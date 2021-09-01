@@ -23,6 +23,7 @@ app.get('/login', (req, res, next) => {
   res.render('login');
 });
 
+
 // app.get('/signup')
 
 app.get('/', Auth.verifySession,
@@ -132,14 +133,18 @@ app.post('/login', (req, res, next) => {
 app.post('/signup', (req, res, next) => {
   var username = req.body.username;
   var password = req.body.password;
+
+
+  console.log('request.session ' + req.session);
   Promise.resolve(models.Users.get({ 'username': username }))
     .then((result) => {
       if (result !== undefined) {
         res.redirect('/signup');
       } else {
-        return models.Users.create({ username, password })
+        return models.Users.create({username, password})
           .then(() => {
-            return models.Sessions.update({ hash: req.session.hash }, { userId: req.session.userId })
+            // console.log('req.session.userId -> ' + req.session.userId);
+            return models.Sessions.update({ hash: req.session.hash }, {userId: req.session.userId})
               .then(() => {
                 res.redirect('/');
               });
@@ -148,6 +153,7 @@ app.post('/signup', (req, res, next) => {
             throw new Error(err);
           })
           .catch((err) => {
+            console.error(err);
             res.redirect('/signup');
           });
       }
@@ -201,7 +207,7 @@ app.get('/:code', (req, res, next) => {
     })
     .catch((error) => {
       // console.log(error);
-      res.cookie('cookieName', 'invalidLink', {maxAge: 3000, httpOnly: true});
+      res.cookie('cookieName', 'invalidLink', {maxAge: (60 * 1000 * 15), httpOnly: true});
       res.redirect('/');
     });
 });

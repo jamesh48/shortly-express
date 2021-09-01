@@ -1,11 +1,11 @@
 const mysql = require('mysql');
 const createTables = require('./config');
 const Promise = require('bluebird');
-const database = 'shortly';
+const database = process.env.DATABASE;
 
 const connection = mysql.createConnection({
-  user: 'root',
-  password: 'CloudlessSky82'
+  user: process.env.DBUSER,
+  password: process.env.DBPASS
 });
 
 const db = Promise.promisifyAll(connection, { multiArgs: true });
